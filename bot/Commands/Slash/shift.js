@@ -24,18 +24,18 @@ module.exports = {
       subcommand
         .setName("manage")
         .setDescription("Manage your shift.")
-        .addStringOption((option) =>
-          option
-            .setName("type")
-            .setRequired(false)
-            .setDescription("Log your shift on a specific type if you wish!")
-            .addChoices(
-              { name: "Patrol", value: "patrol" },
-              { name: "SWAT", value: "swat" },
-              { name: "Internal Affairs", value: "ia" },
-              { name: "Detective", value: "detective" }
-            )
-        )
+    //     .addStringOption((option) =>
+    //       option
+    //         .setName("type")
+    //         .setRequired(false)
+    //         .setDescription("Log your shift on a specific type if you wish!")
+    //         .addChoices(
+    //           { name: "Patrol", value: "patrol" },
+    //           { name: "SWAT", value: "swat" },
+    //           { name: "Internal Affairs", value: "ia" },
+    //           { name: "Detective", value: "detective" }
+    //         )
+    //     )
     )
     .addSubcommand((subcommand) =>
       subcommand.setName("active").setDescription("List all active shifts.")

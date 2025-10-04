@@ -1,4 +1,4 @@
-const { EmbedBuilder, Embed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const crabConfig = require('../schemas/CrabConfig')
 
 module.exports = {
