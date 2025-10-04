@@ -105,7 +105,7 @@ module.exports = {
         );
         if (!Modal && !typeModals) {
           interaction.reply({
-            content: "This select menu could not be found!",
+            content: "This modal could not be found!",
             flags: ["Ephemeral"],
           });
           return;
