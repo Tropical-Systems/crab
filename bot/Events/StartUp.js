@@ -8,7 +8,7 @@ const {
 } = require("../Functions/StartUp-Functions");
 const config = require('../../config.json')
 module.exports = {
-  event: "ready",
+  event: "clientReady",
   once: true,
   execute: async (client) => {
     const BOT_STATUS_URL = process.env.BOT_STATUS_URL;

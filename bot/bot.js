@@ -11,4 +11,3 @@ for (const handler of handlers) {
     require(`./Handlers/${handler}`)(client);
 }
 client.login(process.env.TOKEN)
-
