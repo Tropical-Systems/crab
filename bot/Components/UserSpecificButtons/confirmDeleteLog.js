@@ -5,6 +5,7 @@ const CrabReports = require(`../../schemas/GuildReport`)
 const CrabPunishments = require(`../../schemas/CrabPunishment`)
 const { punishmentMap } = require(`../../Commands/Slash/puishment`)
 const { search, x, check } = require(`../../../emojis.json`)
+const CrabCustomReport = require('../../schemas/CrabCustomReports')
 module.exports = {
   customIdPrefix: 'crab_button-confirm_delete',
   execute: async (interaction) => {
@@ -20,10 +21,14 @@ module.exports = {
       Punishment = await CrabPunishments.findOne({ guildId: interaction.guild.id, punishment_id: fullPunishmentId });
     }
     const Report = await CrabReports.findOne({ guildId: interaction.guild.id, id: id })
+    const CustomReport = await CrabCustomReport.findOne({ guildId: interaction.guild.id, crab_ReportId: id })
     const Record = await CrabRecords.findOne({ guildId: interaction.guild.id, id: id })
     if (Report) {
       await Report.deleteOne({ guildId: interaction.guild.id, id: id })
       message.edit(`${check} **Successfully** removed the report.`)
+    } else if (CustomReport) {
+      await CustomReport.deleteOne({ guildId: interaction.guild.id, crab_ReportId: id })
+      message.edit(`${check} **Successfully** removed this custom report.`)
     } else if (Record) {
       await Record.deleteOne({ guildId: interaction.guild.id, id: id })
       message.edit(`${check} **Successfully** removed the record.`)

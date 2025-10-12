@@ -59,7 +59,7 @@ module.exports = {
           .setLabel("Field Three")
           .setStyle(ButtonStyle.Secondary)
           const RemoveCustomReport = new ButtonBuilder()
-          .setCustomId(`crab_button-custom_report-remove:${reportId}`)
+          .setCustomId(`crab_button-custom_report-remove:${reportId}:${interaction.message.id}`)
           .setEmoji(minus_sign)
           .setLabel("Remove Custom Report")
           .setStyle(ButtonStyle.Danger)
