@@ -9,8 +9,10 @@ module.exports = {
   customIdPrefix: "crab_button-custom_report-remove",
   execute: async (interaction, client) => {
     const [_, reportId, messageId] = interaction.customId.split(":");
-    await interaction.reply({
+    await interaction.update({
       content: `${search} **Fetching** the report...`,
+      embeds: [],
+      components: []
     });
     const response = await interaction.fetchReply();
     const confirmDelete = new ButtonBuilder()
