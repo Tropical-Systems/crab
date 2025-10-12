@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  EmbedBuilder,
-} = require("discord.js");
-const { getTropicalDb } = require("../../Functions/StartUp-Functions");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const {
   crown,
   clipboard_list,
@@ -29,6 +25,9 @@ const {
   mod_program,
 } = require("../../../emojis.json");
 
+const tropicalRoles = require("../../../staff-roles.json");
+const { supportServer } = require("../../../config.json");
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("whois")
@@ -43,16 +42,61 @@ module.exports = {
   execute: async (interaction, client) => {
     const user = interaction.options.getUser("user") || interaction.user;
 
-    let guildMember;
+    // Try to fetch member in current guild
+    let guildMember = null;
     try {
       guildMember = await interaction.guild.members.fetch(user.id);
-    } catch {
-      guildMember = null;
-    }
+    } catch {}
 
-    // fetch user flags/badges
-    const flags = await user.fetch();
-    const badges = flags.flags.toArray();
+    // Try to fetch member in support server
+    let staffMember = null;
+    try {
+      const supportGuild = await client.guilds.fetch(supportServer);
+      staffMember = await supportGuild.members.fetch(user.id);
+    } catch {}
+
+    const embed = new EmbedBuilder()
+      .setAuthor({
+        name: `@${user.username}`,
+        iconURL: user.displayAvatarURL(),
+      })
+      .setColor(0xec3935)
+      .setTimestamp()
+      .setThumbnail(user.displayAvatarURL())
+      .setImage(
+        "https://cdn.discordapp.com/attachments/1265767289924354111/1409647765188907291/CrabBanner-EmbedFooter-RedBG.png"
+      )
+      .addFields(
+        {
+          name: "Discord Information:",
+          value: `>>> ${user}\nUser ID: ${
+            user.id
+          }\nJoined Discord: <t:${Math.floor(user.createdAt / 1000)}:F>${
+            guildMember?.joinedTimestamp
+              ? `\nJoined Server: <t:${Math.floor(
+                  guildMember.joinedTimestamp / 1000
+                )}:F>`
+              : ""
+          }`,
+        },
+      );
+    
+    const fetchedUser = await user.fetch();
+    const badges = fetchedUser.flags?.toArray?.() || [];
+
+    // Filter out redundant verified badges for bots
+    const filteredBadges = user.bot
+      ? badges.filter(
+          (b) =>
+            ![
+              "VerifiedBot",
+              "VerifiedBotDeveloper",
+              "VerifiedDeveloper",
+            ].includes(b)
+        )
+      : badges;
+
+    // Badge-to-emoji map
     const badgeMap = {
       Staff: `${discord_staff} Discord Staff`,
       Partner: `${partnered_server} Partnered Server Owner`,
@@ -68,53 +112,59 @@ module.exports = {
       ActiveDeveloper: `${active_dev} Active Developer`,
     };
 
-    const badgeDisplay = badges.map((b) => badgeMap[b] || b);
+    // Map filtered badges
+    const badgeDisplay = filteredBadges.map((b) => badgeMap[b] || b);
 
-    // add bot badge if applicable
-    if (user.bot) badgeDisplay.push(`${verified_app} User is a bot account.`);
-
-    // add Tropical Systems staff badge from DB
-    if (staffEntry) badgeDisplay.push(`${discord_staff} Tropical Systems ${staffEntry.PositionID}`);
-
-    // roles (if member exists)
+    // Always show bot badge if bot
+    if (user.bot) badgeDisplay.push(`${verified_app} Bot Account`);
+    if (badgeDisplay.length !== 0) {
+      embed.addFields(        {
+          name: `Badges [${badgeDisplay.length}]:`,
+          value: `>>> ${badgeDisplay.join("\n") || "None"}`,
+        },)
+    }
+    // Role display
     let roles = [];
     if (guildMember) {
       const everyoneRole = interaction.guild.roles.everyone;
       roles = guildMember.roles.cache
-        .filter((role) => role.id !== everyoneRole.id)
+        .filter((r) => r.id !== everyoneRole.id)
         .sort((a, b) => b.position - a.position)
-        .map((r) => r);
+        .map((r) => r.toString());
     }
-
-    // join timestamp
-    const joinTimestamp = guildMember?.joinedTimestamp;
-
-    // build embed
-    const embed = new EmbedBuilder()
-      .setAuthor({ name: `@${user.username}`, iconURL: user.displayAvatarURL() })
-      .setColor(0xec3935)
-      .setTimestamp()
-      .setThumbnail(user.displayAvatarURL())
-      .setImage(
-        "https://cdn.discordapp.com/attachments/1265767289924354111/1409647765188907291/CrabBanner-EmbedFooter-RedBG.png"
-      )
-      .addFields(
-        {
-          name: "Discord Information:",
-          value: `>>> ${user}\nUser ID: ${user.id}\nJoined Discord: <t:${Math.floor(
-            user.createdAt / 1000
-          )}:F>${joinTimestamp ? `\nJoined Server: <t:${Math.floor(joinTimestamp / 1000)}:F>` : ""}`,
-        },
-        {
-          name: `Badges [${badgeDisplay.length}]:`,
-          value: `>>> ${badgeDisplay.join("\n") || "None"}`,
-        },
-        {
+    if (roles.length !== 0) {
+      embed.addFields(        {
           name: `Roles [${roles.length}]:`,
           value: `>>> ${roles.join(", ") || "None"}`,
-        }
+        })
+    }
+
+    // Build base embed
+    
+    let staffTitle = null;
+    let staffEmoji = null;
+
+    if (staffMember) {
+      const match = Object.entries(tropicalRoles).find(([roleId]) =>
+        staffMember.roles.cache.has(roleId)
       );
 
-    await interaction.reply({ embeds: [embed] });
+      if (match) {
+        const [roleId, data] = match;
+        staffTitle = data.name;
+        staffEmoji = data.emoji;
+      }
+    }
+
+    let staffStatus;
+    if (staffTitle) {
+      staffStatus = `${staffEmoji} ${staffTitle}`;
+      embed.addFields({
+        name: "Staff Information:",
+        value: `>>> ${staffStatus}`,
+      });
+    }
+
+    return interaction.reply({ embeds: [embed] });
   },
 };
