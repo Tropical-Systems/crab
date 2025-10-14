@@ -84,7 +84,8 @@ module.exports = {
           client.selectMenus.get(interaction.values[0]) ||
           client.selectMenus.get(interaction.customId);
         const UserSelectMenu = [...client.userSMs.values()].find((sm) =>
-          interaction.customId.startsWith(sm.customIdPrefix)
+          interaction.customId.startsWith(sm.customIdPrefix) ||
+          interaction.values[0].startsWith(sm.customIdPrefix)
         );
         if (!SelectMenu && !UserSelectMenu) {
           interaction.reply({

@@ -7,7 +7,7 @@ module.exports = {
     const [_, reportId, fieldNumber] = interaction.customId.split(":")
 
     const modal = new ModalBuilder()
-      .setCustomId(`crab_modal-custom_report-field-edit:${reportId}:${fieldNumber}`)
+      .setCustomId(`crab_modal-report_field_edit:${reportId}:${fieldNumber}`)
       .setTitle(`Edit Field ${fieldNumber}`);
       
     const FieldLabel = new TextInputBuilder()

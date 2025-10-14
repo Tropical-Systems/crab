@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js')
 const crabCustomReports = require("../../schemas/CrabCustomReports");
 const { clipboard_list } = require("../../../emojis.json")
 module.exports = {
-  customIdPrefix: 'crab_modal-custom_report-field-edit',
+  customIdPrefix: 'crab_modal-report_field_edit',
   execute: async (interaction, client) => {
     const [_, reportId, fieldNumber] = interaction.customId.split(":")
     const CustomReport =  await crabCustomReports.findOne({ guildId: interaction.guild.id, crab_ReportId: reportId })
