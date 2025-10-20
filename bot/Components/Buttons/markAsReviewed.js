@@ -30,6 +30,10 @@ module.exports = {
         .setStyle(ButtonStyle.Secondary)
         .setLabel(`Sent from ${interaction.guild.name}`)
       const ServerRow = new ActionRowBuilder().addComponents(serverButton)
+      await Report.updateOne(
+            { $set: { ReviewedBy: interaction.user.id } },
+            { upsert: true, new: true }
+      )
       interaction.update({ content: `This record has been reviewed by ${interaction.user}`, embeds: [ReviewedEmbed], components: [newRow] })
       if (user) {
         try {

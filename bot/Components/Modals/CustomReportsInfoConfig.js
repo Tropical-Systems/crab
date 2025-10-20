@@ -99,11 +99,11 @@ module.exports = {
       .setColor(0xec3935)
       .setDescription(
         `${clipboard_list} **${
-          CustomReport.crab_ReportName
+          reportName
         } Report Information**\n> **Field One Name:** ${
-          CustomReport.crab_ReportField1Label
+          fieldOneName
         }\n> **Field One Placeholder:** ${
-          CustomReport.crab_ReportField1PlaceHolder
+          fieldOnePlaceholder
         }\n\n> **Field Two Name:** ${
           CustomReport.crab_ReportField2Label || "Not Set"
         }\n> **Field Two Placeholder:** ${
