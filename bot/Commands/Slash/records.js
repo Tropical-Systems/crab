@@ -381,7 +381,7 @@ module.exports = {
       results.map(user => ({
         name: user.name,
         value: user.name
-      })).slice(0, 25)
+      })).slice(0, 10)
     );
   }
 };

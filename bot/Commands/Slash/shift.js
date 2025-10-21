@@ -15,7 +15,8 @@ const ShiftLog = require("../../schemas/ShiftLog");
 const humanizeDuration = require("humanize-duration");
 const randomString = require("../../Functions/randomId");
 const capitalizeFirstLetter = require("../../Functions/capitalizeFirstLetter");
-const { x, check, clock_pause, clock_stop, clock_play, clock } = require("../../../emojis.json")
+const { x, check, clock_pause, clock_stop, clock_play, clock } = require("../../../emojis.json");
+const crabShiftTypeConfig = require("../../schemas/CrabShiftType");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("shift")
@@ -24,18 +25,13 @@ module.exports = {
       subcommand
         .setName("manage")
         .setDescription("Manage your shift.")
-    //     .addStringOption((option) =>
-    //       option
-    //         .setName("type")
-    //         .setRequired(false)
-    //         .setDescription("Log your shift on a specific type if you wish!")
-    //         .addChoices(
-    //           { name: "Patrol", value: "patrol" },
-    //           { name: "SWAT", value: "swat" },
-    //           { name: "Internal Affairs", value: "ia" },
-    //           { name: "Detective", value: "detective" }
-    //         )
-    //     )
+        .addStringOption((option) =>
+          option
+            .setName("type")
+            .setRequired(false)
+            .setDescription("Log your shift on a specific type if you wish!")
+            .setAutocomplete(true)
+        )
     )
     .addSubcommand((subcommand) =>
       subcommand.setName("active").setDescription("List all active shifts.")
@@ -75,7 +71,6 @@ module.exports = {
     } else {
       if (subcommand === "manage") {
         const shiftType = interaction.options.getString("type") || "default";
-        const departmentTypes = guildConfig.shift_Types;
         let userInfo = await UserShift.findOne({
           shift_User: interaction.user.id,
           guildId: interaction.guild.id,
@@ -95,11 +90,6 @@ module.exports = {
           await newShiftUser.save();
           userInfo = newShiftUser;
         }
-        if (shiftType !== "default") {
-        if (!departmentTypes.includes(shiftType)) {
-          return interaction.reply({ content: `${x} The shift type you selected, ${inlineCode(capitalizeFirstLetter(shiftType))}, is not an approved shift in this department.` })
-        }
-      }
           const onDuty = userInfo.shift_OnDuty === true;
           const onBreak = userInfo.shift_OnBreak;
           const totalShiftTime = userInfo.shift_Total || 0;
@@ -382,4 +372,13 @@ module.exports = {
       }
     }
   },
+  async autocomplete(interaction, client) {
+    const results = await crabShiftTypeConfig.find({ guildId: interaction.guild.id })
+    await interaction.respond(
+      results.map(type => ({
+        name: type.name,
+        value: type.type_id
+      })).slice(0, 5)
+    );
+  }
 };
