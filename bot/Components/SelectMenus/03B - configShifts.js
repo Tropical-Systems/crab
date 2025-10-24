@@ -44,7 +44,7 @@ module.exports = {
       const emoji = eval(`circle_${i + 1}`);
      ShiftTypesMenu.addOptions(
       new StringSelectMenuOptionBuilder()
-      .setLabel(`${GuildShiftType.name}`)
+      .setLabel(`Edit ${GuildShiftType.name}`)
       .setEmoji(emoji)
       .setValue(`custom_shift_type-edit:${GuildShiftType.type_id}`),
     )

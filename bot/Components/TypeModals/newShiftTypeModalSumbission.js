@@ -4,7 +4,7 @@ const CrabConfig = require('../../schemas/CrabConfig')
 const { check } = require("../../../emojis.json");
 const randomId = require("../../Functions/customReportId");
 module.exports = {
-  customIdPrefix: "crab_modal-shift_type",
+  customIdPrefix: "crab_modal-shift_type_add",
   execute: async (interaction, client) => {
     const [_, typeNumber] = interaction.customId.split(":");
     const typeName = interaction.fields.getTextInputValue(
