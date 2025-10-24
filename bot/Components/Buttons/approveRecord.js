@@ -10,6 +10,7 @@ const {
 } = require("discord.js");
 const CrabConfig = require("../../schemas/CrabConfig");
 const GuildRecord = require("../../schemas/GuildRecord");
+const { check } = require("../../../emojis.json");
 module.exports = {
   customId: "crab-button_record-approve",
   execute: async (interaction, client) => {
@@ -38,6 +39,11 @@ module.exports = {
         .setDisabled(true)
         .setStyle(ButtonStyle.Secondary)
         .setLabel(`Sent from ${interaction.guild.name}`);
+      const DMEmbed = new EmbedBuilder()
+        .setColor(0xec3935)
+        .setDescription(
+          `${check} Your record has been **approved** by <@${Record.reviewedBy}>.`
+        );
       const row = new ActionRowBuilder().addComponents(serverButton);
       interaction.update({
         content: `This record has been approved by ${interaction.user}`,
@@ -47,9 +53,7 @@ module.exports = {
       if (user) {
         try {
           await user.send({
-            content: `**Record ID:** ${inlineCode(
-              Record.id
-            )} has been approved by ${interaction.user}`,
+            embeds: [DMEmbed],
             components: [row],
           });
         } catch (err) {
