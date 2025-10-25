@@ -93,6 +93,7 @@ module.exports = {
     await interaction.update({
       embeds: [ConfigEmbed],
       components: [ConfigRow, ConfigRow2, ConfigRow3],
+      files: [file]
     });
     const embed = new EmbedBuilder()
       .setTitle(`Report Customization Panel`)

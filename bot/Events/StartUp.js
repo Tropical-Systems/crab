@@ -1,4 +1,4 @@
-const wipeShifts = require("../Functions/wipeShifts");
+// const wipeShifts = require("../Functions/wipeShifts");
 const chalk = require("chalk");
 require("dotenv").config();
 const {
@@ -19,7 +19,7 @@ module.exports = {
     try {
       await startStayAliveDb();
       console.log(chalk.green(`[SYSTEM] 🦀 Logged in as ${client.user.username}`));
-      wipeShifts();
+      // wipeShifts();
     } catch (error) {
       console.error(chalk.red("[SYSTEM] ❌ Startup error:", error));
       process.exit(1);

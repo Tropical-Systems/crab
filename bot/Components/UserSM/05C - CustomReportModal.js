@@ -5,7 +5,7 @@ module.exports = {
   execute: async (interaction) => {
     const [_, reportId] = interaction.values[0].split(":");
     const MIN_CHAR_MODAL = 100
-    const MAX_CHAR_MODAL = 1020
+    const MAX_CHAR_MODAL = 256
     const CustomReport = await CrabCustomReports.findOne({ guildId: interaction.guild.id, crab_ReportId: reportId })
     const modal = new ModalBuilder()
     .setTitle(CustomReport.crab_ReportName)

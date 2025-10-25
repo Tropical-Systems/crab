@@ -7,6 +7,7 @@ const {
   MessageFlags,
   ButtonBuilder,
   ButtonStyle,
+  inlineCode,
 } = require("discord.js");
 const CrabConfig = require("../../schemas/CrabConfig");
 const CrabReport = require("../../schemas/GuildReport");
@@ -64,6 +65,7 @@ module.exports = {
         )
     ),
   execute: async (interaction) => {
+    const endReportNames = "Report"
     const subcommand = interaction.options.getSubcommand();
     const GuildConfig = await CrabConfig.findOne({
       guildId: interaction.guild.id,
@@ -276,10 +278,10 @@ module.exports = {
                 crab_ReportId: Report.custom_reportId,
               });
               let ReportName = []
-              if (CustomReportInformation.crab_ReportName.endsWith("Report")) {
+              if (CustomReportInformation.crab_ReportName.endsWith(endReportNames)) {
                 ReportName.push(CustomReportInformation.crab_ReportName)
               } else {
-                ReportName.push(CustomReportInformation.crab_ReportName, "Report")
+                ReportName.push(CustomReportInformation.crab_ReportName, endReportNames)
                 ReportName.join(" ")
               }
               const embed = new EmbedBuilder()
@@ -320,10 +322,10 @@ module.exports = {
               Reports.push(embed);
             } else {
             let ReportName = []
-              if (Report.ReportType.endsWith("Report")) {
+              if (Report.ReportType.endsWith(endReportNames)) {
                 ReportName.push(Report.ReportType)
               } else {
-                ReportName.push(Report.ReportType, "Report")
+                ReportName.push(Report.ReportType, endReportNames)
                 ReportName.join(" ")
               }
               const ReportDescription = Report.Description;
@@ -372,7 +374,7 @@ module.exports = {
         });
         if (!Report) {
           return await interaction.editReply({
-            content: `${x} I was unable to locate a report with that id, please double check the ID and try again.`,
+            content: `${x} I was unable to locate a report with the id ${inlineCode(ReportId)}, please double check the ID and try again.`,
           });
         }
         const confirmDelete = new ButtonBuilder()
@@ -395,7 +397,7 @@ module.exports = {
           cancelDelete
         );
         await interaction.editReply({
-          content: `${check} I was able to locate a report with this id string, would you like to proceed and void the report?\n-# This action is **irreversible**.`,
+          content: `${check} I was able to locate a report with the id ${inlineCode(ReportId)}, would you like to proceed and void the report?\n-# This action is **irreversible**.`,
           components: [confirmationRow],
         });
       }
