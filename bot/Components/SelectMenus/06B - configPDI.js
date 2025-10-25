@@ -18,8 +18,8 @@ module.exports = {
     .setPlaceholder('Promotion Logging')
     .setMaxValues(1);
     const backButton = new ButtonBuilder()
-    .setCustomId(back_arrow)
-    .setEmoji("<:crab_back_arrow:1350551176780972113>")
+    .setCustomId('crab-button_back')
+    .setEmoji(back_arrow)
     .setLabel('Back')
     .setStyle(ButtonStyle.Success);
     const row1 = new ActionRowBuilder().addComponents(InfractionLogMenu)
