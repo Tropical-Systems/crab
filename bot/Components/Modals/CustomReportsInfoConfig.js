@@ -7,7 +7,8 @@ const {
   ChannelSelectMenuBuilder,
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
-  ChannelType
+  ChannelType,
+  AttachmentBuilder
 } = require("discord.js");
 const CrabConfig = require("../../schemas/CrabConfig");
 const CrabCustomReport = require("../../schemas/CrabCustomReports");
@@ -48,12 +49,11 @@ module.exports = {
       crab_ReportId: customReportID,
       guildId: interaction.guild.id
     });
+    const file = new AttachmentBuilder("bot/Images/embed-banner.png")
     const ConfigEmbed = new EmbedBuilder()
       .setColor(0xec3935)
       .setTitle("Configure Crab")
-      .setImage(
-        "https://cdn.discordapp.com/attachments/1265767289924354111/1409647765188907291/CrabBanner-EmbedFooter-RedBG.png?ex=68ae2449&is=68acd2c9&hm=643546e45cccda97a49ab46b06c08471d89efbd76f2043d57d0db22cf5a1f657&"
-      )
+      .setImage("attachment://embed-banner.png")
       .setDescription(
         `You are now configuring the **reports** module of Crab! Below you will find the configuration you will set:\n* **Report Logging**\n  * Select the channel you wish to log your reports in.`
       );

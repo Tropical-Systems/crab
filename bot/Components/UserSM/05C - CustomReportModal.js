@@ -4,6 +4,8 @@ module.exports = {
   customIdPrefix: 'crab_custom_report',
   execute: async (interaction) => {
     const [_, reportId] = interaction.values[0].split(":");
+    const MIN_CHAR_MODAL = 100
+    const MAX_CHAR_MODAL = 1020
     const CustomReport = await CrabCustomReports.findOne({ guildId: interaction.guild.id, crab_ReportId: reportId })
     const modal = new ModalBuilder()
     .setTitle(CustomReport.crab_ReportName)
@@ -15,8 +17,8 @@ module.exports = {
       .setCustomId("crab_input-field-1")
       .setStyle(TextInputStyle.Paragraph)
       .setRequired(true)
-      .setMinLength(100)
-      .setMaxLength(1020);
+      .setMinLength(MIN_CHAR_MODAL)
+      .setMaxLength(MAX_CHAR_MODAL);
     const Field2 = new TextInputBuilder()
       .setLabel(CustomReport.crab_ReportField2Label || "Not set")
       .setPlaceholder(CustomReport.crab_ReportField2PlaceHolder || "Not set")
@@ -24,17 +26,16 @@ module.exports = {
       .setStyle(TextInputStyle.Paragraph)
       .setRequired(false)
       .setRequired(true)
-      .setMinLength(100)
-      .setMaxLength(1020)
+      .setMinLength(MIN_CHAR_MODAL)
+      .setMaxLength(MAX_CHAR_MODAL);
     const Field3 = new TextInputBuilder()
       .setLabel(CustomReport.crab_ReportField3Label || "Not set")
       .setPlaceholder(CustomReport.crab_ReportField3PlaceHolder || "Not set")
       .setCustomId("crab_input-field-3")
       .setStyle(TextInputStyle.Paragraph)
-      .setRequired(true)
-      .setMinLength(100)
       .setRequired(false)
-      .setMaxLength(1020)
+      .setMinLength(MIN_CHAR_MODAL)
+      .setMaxLength(MAX_CHAR_MODAL);
     const row1 = new ActionRowBuilder().addComponents(Field1)
     modal.addComponents(row1)
     if (CustomReport.crab_ReportField2Label && CustomReport.crab_ReportField2PlaceHolder) {

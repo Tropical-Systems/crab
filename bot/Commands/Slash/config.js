@@ -6,7 +6,8 @@ const {
   StringSelectMenuOptionBuilder,
   ActionRowBuilder,
   MessageFlags,
-  inlineCode
+  inlineCode,
+  AttachmentBuilder
 } = require("discord.js");
 const crabConfig = require("../../schemas/CrabConfig.js");
 const { fire_truck, officer, traffic_light, message, lock_pass, barrier, clock, clipboard, flag, trending_up, repeat } = require("../../../emojis.json")
@@ -57,6 +58,7 @@ module.exports = {
       const departmentType = GuildConfig.crab_DepartmentType;
 
       if (departmentType === "leo") {
+        const file = new AttachmentBuilder("bot/Images/embed-banner.png")
         const embed = new EmbedBuilder()
           .setColor(0xec3935)
           .setTitle("Configure Crab")
@@ -106,10 +108,11 @@ module.exports = {
           flags: MessageFlags.Ephemeral
         });
       } else if (departmentType === "fd-med") {
+        const file = new AttachmentBuilder("bot/Images/embed-banner.png")
         const embed = new EmbedBuilder()
           .setColor(0xec3935)
           .setTitle("Configure Crab")
-          .setImage("https://cdn.discordapp.com/attachments/1265767289924354111/1409647765188907291/CrabBanner-EmbedFooter-RedBG.png?ex=68ae2449&is=68acd2c9&hm=643546e45cccda97a49ab46b06c08471d89efbd76f2043d57d0db22cf5a1f657&")
+          .setImage("attachment://embed-banner.png")
           .setDescription(`You have selected the **Fire and Medical** department type.\n\nNow, you will configure the modules for the **Law Enforcement** commands. The **Law Enforcement** type will allow the following modules to be used:\n* **${lock_pass} Configure Permissions**\n  * Specifiy your department personnel access roles.\n* **${message} Configure Prefix**\n  * Change Crab"s prefix from the default ${inlineCode("-")}.\n  * Your current prefix is ${inlineCode(GuildPrefix)}\n* **${clock} Shift Logging**\n  * Easily log your department personnel"s shifts with our shift logging system!\n* **${flag} Reports**\n  * Easily log your reports like: accident reports, scene reports, warrants, and more!\n* **${trending_up} Promotions, Demotions, and Infractions**\n  * Easily promote, demote, or infract your department personnel with our customizable staff management system!\n* **${repeat} Change Module**\n  * Switch the module from **Law Enforcement** to **Law Enforcement** or **Department of Transportation** easily!`)
 
         const fdMedSelect = new StringSelectMenuBuilder()
@@ -146,6 +149,7 @@ module.exports = {
           embeds: [embed],
           components: [row],
           flags: MessageFlags.Ephemeral,
+          files: [file]
         });
       } else if (departmentType === "dot") {
         const embed = new EmbedBuilder()

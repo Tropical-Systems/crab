@@ -1,7 +1,8 @@
-const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, MessageFlags } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, MessageFlags, AttachmentBuilder } = require("discord.js");
 const CrabConfig = require("../../schemas/CrabConfig");
 const crabCustomReports = require("../../schemas/CrabCustomReports");
 const GuildReport = require("../../schemas/GuildReport");
+const randomString = require("../../Functions/randomId")
 const { clipboard_list, check } = require("../../../emojis.json");
 module.exports = {
   customIdPrefix: "crab_modal-custom_report",
@@ -24,18 +25,13 @@ module.exports = {
     if (CustomReport.crab_ReportField3Label) {
       field3 = interaction.fields.getTextInputValue("crab_input-field-3")
     }
-
-    function randomString(length, chars) {
-      var result = "";
-      for (var i = length; i > 0; --i)
-        result += chars[Math.floor(Math.random() * chars.length)];
-      return result;
-    }
     const ReportID = `report_${randomString(
       24,
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     )}`;
     const SupervisorRole = GuildConfig.perms_SupervisorRole;
+    const file = new AttachmentBuilder("bot/Images/embed-banner.png")
+    
     const embed = new EmbedBuilder()
       .setAuthor({
         name: `@${interaction.user.username}`,
@@ -47,7 +43,7 @@ module.exports = {
         `Below are details of the ${CustomReport.crab_ReportName} report submitted by ${interaction.user}.`
       )
       .setImage(
-        "https://cdn.discordapp.com/attachments/1265767289924354111/1409647765188907291/CrabBanner-EmbedFooter-RedBG.png?ex=68ae2449&is=68acd2c9&hm=643546e45cccda97a49ab46b06c08471d89efbd76f2043d57d0db22cf5a1f657&"
+        "attachment://embed-banner.png"
       )
       .setTitle(CustomReport.crab_ReportName)
       .addFields({
@@ -81,6 +77,7 @@ module.exports = {
         content: `<@&${SupervisorRole}>, a new report has been submitted by ${interaction.user}. Please review it and click the button.`,
         embeds: [embed],
         components: [row],
+        files: [file],
       });
       interaction.reply({
         content:

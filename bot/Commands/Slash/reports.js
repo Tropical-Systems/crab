@@ -358,11 +358,7 @@ module.exports = {
             flags: MessageFlags.Ephemeral,
           });
         } catch (error) {
-          interaction.reply({
-            content: `Error: ${error}`,
-            flags: MessageFlags.Ephemeral,
-          });
-          console.log(error)
+          // ! Need to check if error is handled by handler.
         }
       } else if (subcommand === "void") {
         const ReportId = interaction.options.getString("report-id");

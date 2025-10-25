@@ -375,13 +375,14 @@ module.exports = {
     }
   },
   async autocomplete(interaction, client) {
+    MAX_RESULTS = 10
     const focused = interaction.options.getFocused();
     const results = await searchRobloxUsers(focused);
     await interaction.respond(
       results.map(user => ({
         name: user.name,
         value: user.name
-      })).slice(0, 10)
+      })).slice(0, MAX_RESULTS)
     );
   }
 };

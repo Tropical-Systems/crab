@@ -3,6 +3,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   MessageFlags,
+  inlineCode,
 } = require("discord.js");
 const { check, x, search } = require("../../../emojis.json")
 module.exports = {
@@ -34,7 +35,7 @@ module.exports = {
       cancelDelete
     );
     await interaction.editReply({
-      content: `${check} I was able to locate a report with this id string, would you like to proceed and void the report?\n-# This action is **irreversible**.`,
+      content: `${check} I was able to locate a report with the id ${inlineCode(reportId)}, would you like to proceed and void the report?\n-# This action is **irreversible**.`,
       components: [confirmationRow],
     });
   },

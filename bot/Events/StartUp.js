@@ -4,7 +4,6 @@ require("dotenv").config();
 const {
   sendHeartbeat,
   startStayAliveDb,
-  getTropicalDb,
 } = require("../Functions/StartUp-Functions");
 const config = require('../../config.json')
 module.exports = {

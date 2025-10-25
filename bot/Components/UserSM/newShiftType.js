@@ -11,9 +11,10 @@ const crabShiftTypeConfig = require("../../schemas/CrabShiftType");
 module.exports = {
   customIdPrefix: "custom_shift_type-add",
   execute: async (interaction) => {
+    MAX_SHIFT_TYPES = 5
     const [_, typeNumber] = interaction.values[0].split(":");
     const GuildShiftTypes = await crabShiftTypeConfig.find({ guildId: interaction.guild.id})
-    if (GuildShiftTypes.length >= 5) {
+    if (GuildShiftTypes.length >= MAX_SHIFT_TYPES) {
       return interaction.reply({ content: `${x}, you have reached the limit of custom shift types. You cannot make any more, if you wish you can remove a current custom shift type.`, flags: MessageFlags.Ephemeral })
     }
     const modal = new ModalBuilder()
