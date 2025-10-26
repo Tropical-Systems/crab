@@ -12,6 +12,7 @@ module.exports = {
   customIdPrefix: "custom_shift_type-add",
   execute: async (interaction) => {
     MAX_SHIFT_TYPES = 5
+    MAX_SHIFT_ROLES = 5
     const [_, typeNumber] = interaction.values[0].split(":");
     const GuildShiftTypes = await crabShiftTypeConfig.find({ guildId: interaction.guild.id})
     if (GuildShiftTypes.length >= MAX_SHIFT_TYPES) {
@@ -27,7 +28,7 @@ module.exports = {
       .setRequired(true);
     const RoleSelect = new RoleSelectMenuBuilder()
       .setCustomId("crab_select-shift_type_roles")
-      .setMaxValues(5)
+      .setMaxValues(MAX_SHIFT_ROLES)
       .setRequired(true);
 
     modal.addLabelComponents(
