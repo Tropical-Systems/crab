@@ -133,7 +133,7 @@ module.exports = {
             }
             embed.addFields({
               name: "Custom Reports:",
-              value: CustomReportsNames,
+              value: CustomReportsNames.join(`\n`),
             });
           }
           const row = new ActionRowBuilder().addComponents(ReportSelectMenu);
