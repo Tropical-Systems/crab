@@ -1,6 +1,7 @@
 const { EmbedBuilder, inlineCode, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, MessageFlags, Message, ButtonBuilder, ButtonStyle } = require('discord.js')
 const CrabConfig = require('../../schemas/CrabConfig')
 const GuildRecord = require('../../schemas/GuildRecord')
+const { x } = require("../../../emojis.json")
 module.exports = {
   customId: 'crab-button_record-deny',
   execute: async (interaction, client) => {
@@ -22,11 +23,16 @@ module.exports = {
         .setDisabled(true)
         .setStyle(ButtonStyle.Secondary)
         .setLabel(`Sent from ${interaction.guild.name}`)
+      const DMEmbed = new EmbedBuilder()
+        .setColor(0xec3935)
+        .setDescription(
+          `${x} Your record has been **denied** by <@${Record.reviewedBy}>.`
+        );
       const row = new ActionRowBuilder().addComponents(serverButton)
       interaction.update({ content: `This record has been denied by ${interaction.user}`, embeds: [DenyEmbed], components: [] })
       if (user) {
         try {
-          await user.send({ content: `**Record ID:** ${inlineCode(Record.id)} has been denied by ${interaction.user}`, components: [row]});
+          await user.send({ embeds: [DMEmbed], components: [row]});
         } catch (err) {
           return interaction.followUp({ content: "I could not DM this user.", flags: MessageFlags.Ephemeral })
         }

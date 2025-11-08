@@ -9,6 +9,22 @@ const GuildReport = new Schema({
     type: String,
     required: false
   },
+  custom_field1: {
+    type: String,
+    required: false
+  },
+  custom_field2: {
+    type: String,
+    required: false
+  },
+  custom_field3: {
+    type: String,
+    required: false
+  },
+  custom_reportId: {
+    type: String,
+    requried: false,
+  },
   IssuedBy: {
     type: String,
     required: false
