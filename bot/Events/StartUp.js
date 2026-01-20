@@ -16,7 +16,7 @@ module.exports = {
 
       console.log(chalk.green("[SYSTEM] 🌺 Connected to DB."));
       console.log(chalk.green(`[SYSTEM] 🦀 Logged in as ${client.user.username}`));
-      wipeShifts(); 
+      // wipeShifts(); 
     } catch (error) {
       console.error(chalk.red("[SYSTEM] ❌ Startup error:", error));
       process.exit(1);
