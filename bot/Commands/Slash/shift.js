@@ -340,6 +340,15 @@ module.exports = {
 
           let counter = 1;
           for (const [shift_id, data] of UserLogMap.entries()) {
+            const shiftTime =
+              typeof data.shift_Time === "number" && !isNaN(data.shift_Time)
+                ? data.shift_Time
+                : 0;
+            const breakTime =
+              typeof data.shift_BreakTime === "number" &&
+              !isNaN(data.shift_BreakTime)
+                ? data.shift_BreakTime
+                : 0;
             const totalTimeOnline = humanizeDuration(data.shift_Time, {
               round: true,
             });
