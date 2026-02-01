@@ -349,12 +349,16 @@ module.exports = {
               !isNaN(data.shift_BreakTime)
                 ? data.shift_BreakTime
                 : 0;
-            const totalTimeOnline = humanizeDuration(data.shift_Time, {
-              round: true,
-            });
-            const totalBreakTime = humanizeDuration(data.shift_BreakTime, {
-              round: true,
-            });
+
+            const totalTimeOnline =
+              shiftTime > 0
+                ? humanizeDuration(shiftTime, { round: true })
+                : "0 seconds";
+            const totalBreakTime =
+              breakTime > 0
+                ? humanizeDuration(breakTime, { round: true })
+                : "0 seconds";
+
             embed.addFields({
               name: `**${counter}:** ${inlineCode(shift_id)}`,
               value: `>>> **Shift Time:** ${totalTimeOnline}\n**Shift Break:** ${totalBreakTime}`,
