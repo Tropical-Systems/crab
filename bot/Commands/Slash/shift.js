@@ -50,7 +50,6 @@ module.exports = {
         .addUserOption((user) =>
           user
             .setName("user")
-            .setRequired(true)
             .setDescription("The user you want to manage."),
         ),
     )
